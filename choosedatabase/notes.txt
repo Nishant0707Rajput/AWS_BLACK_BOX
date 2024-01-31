@@ -7,26 +7,22 @@ Things That matter
 - Query pattern
 - Amount of scale needed to handle
 
-1. Caching
-When we don't want to query the same data again and again from database or remote call from different service that is having high latency, then we can cache that locally.Commonly used solutions are - Redis, Memecache. 
+1. Caching - Redis, Memecache
+When we don't want to query the same data again and again from database or remote call from different service that is having high latency, then we can cache that locally. 
 
-2. File Storage
+2. File Storage - Amazon S3.
 Files like images, videos etc. To store this kind of data we use blob storage. These are not databases, Databases are fundamentally those where we can query on the data.
-Commonly used - Amazon S3.
 We should also use CDNs to make this data available throughout the globe.A content delivery network (CDN) is a geographically distributed group of servers that caches content close to end users. CDN examples - Akamai, cloudflare, cloudfront.
 
-3. Text Search Engines
+3. Text Search Engines - ElasticSearch and Solr, Both of these are built on top of Apache lucene.
 These are not databases these are search engines. Databases gives us guarantee that if we write some data to databases, it wouldn't be lost.
 There might be fuzzy search. We can provide a level of fuzzyness that our search engine needs to support e.g. edit distance = 3. For these kind of use cases, we should use text search engine.
-Commonly used CDNs- ElasticSearch and Solr, Both of these are built on top of Apache lucene.
 
-4. Time series databases
+4. Time series databases - Influx DB, Open TSDB.
 These databases are extension of relational databases, with not all the functionalities and certain additional functionalities. When we are building matrix monitoring kind of system we cannot do random updates. We will always do sequential updates in the append only mode. If we put an entry at t1, next entry would be at t2 where t2 > t1 i.e. append only write mode. The read queries will be bulk read queries with a time range to query last minute or last few hours or few days of data. Timeseries databases are optimised for this kind of query pattern.
-Ex - Influx DB, Open TSDB.
 
-5. Datawarehouse/Big data
+5. Datawarehouse/Big data - Hadoop
 When we have lot of information and we want to store that information and provide analytics on that. These are not used for transactional systems, these are generally used for offline reporting. 
-Ex - Hadoop
  
 
 SQL vs NoSql databases
@@ -40,3 +36,11 @@ Another factor is when we need ACID properties in our databases. Relational data
 If we have structured data and we do not need ACID properties then we can use any of them (SQL or NoSQL) it will not make much difference
 
 7. Document DBs - MONGODB, Couchbase
+
+When data to be stored is unstructured, then we should use these kind of databases, Example - On e-commerce platforms, we have certain products in our inventory which have different attributes, for example clothes would have attribute like "color" while milk would have attribute like "expiry-date". We need to query on the basis of these attributes. These NoSQL databases are optimised for such kind of use-case. 
+
+8. Columnar data - Cassandra, Hbase
+If we have ever increasing data e.g. uber drivers are increasing day by day and location-data fed by these users will be increasing day by day.Another examples can be chat-application and orders on e-commerce platforms. If we have Less number of queries but large amount of data then these kind of databases can be used. Cassandra is easy and not very heavy to deploy.
+
+
+Combination of databases can also be used. For example - after order completion we can move order data from relational databases to columnar databases.
